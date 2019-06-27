@@ -1,0 +1,11 @@
+.link {
+  color: red !important;
+}
+
+.link:hover {
+  text-decoration: none;
+}
+
+/* * {
+  background-color: rgb(22, 149, 199);
+} */
