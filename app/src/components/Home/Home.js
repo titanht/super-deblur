@@ -5,6 +5,9 @@ import Item from '../shared/Item';
 import Container from '../shared/Container';
 import ImageCard from '../shared/ImageCard';
 import captureVideoFrame from 'capture-video-frame';
+import Cropper from 'react-cropper';
+
+import 'cropperjs/dist/cropper.css';
 
 const styles = theme => ({
   root: {
@@ -26,6 +29,11 @@ class Home extends Component {
     img: null
   }
 
+  _crop(){
+    // image in dataUrl
+    console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
+  }
+
   handleCapture = () => {
     console.log("Capture")
     var frame = captureVideoFrame('my-video', 'png')
@@ -35,6 +43,10 @@ class Home extends Component {
     },() => console.log(this.state.img))
     console.log(frame)
   }
+
+  componentDidMount() {
+  }
+  
 
   render() {
     const {classes} = this.props;
@@ -68,6 +80,16 @@ class Home extends Component {
               )
             }
           </Item> */}
+
+          {/* <img id='image' style={{maxWidth: '100%'}} alt="max" src="/imgs/1.png" /> */}
+          <Cropper
+            ref='cropper'
+            src='/imgs/1.png'
+            style={{height: 400, width: '100%'}}
+            // Cropper.js options
+            aspectRatio={1/1}
+            guides={false}
+            crop={this._crop.bind(this)} />
         </Container>
       </div>
     );
