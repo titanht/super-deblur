@@ -16,7 +16,6 @@ const styles = theme => ({
   },
 });
 
-
 class ImageContainer extends Component {
   state = {
     imageName: null,

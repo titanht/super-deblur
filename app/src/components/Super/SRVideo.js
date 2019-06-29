@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/styles';
 import Container from '../shared/Container';
 import Item from '../shared/Item';
-import { Button } from '@material-ui/core';
+import { Button, withStyles } from '@material-ui/core';
 import { VideoCall } from '@material-ui/icons';
 import captureVideoFrame from 'capture-video-frame';
 import Cropper from 'react-cropper';
@@ -10,14 +9,19 @@ import path from 'path';
 import fs from 'fs';
 
 import 'cropperjs/dist/cropper.css';
+import VideoCard from './VideoCard';
 
 const styles = theme => ({
   root: {
     flexGrow: 1
   },
+  cropped: {
+    marginBottom: theme.spacing(4)
+  }
 });
 
 const VIDEOS_FOLDER = path.join('./', __dirname, 'public', 'videos');
+const IMGS_FOLDER = path.join('./', __dirname, 'public', 'imgs');
 
 class SRVideo extends Component {
 
@@ -62,7 +66,9 @@ class SRVideo extends Component {
     const frame = captureVideoFrame('my-video', 'png')
     document.getElementById('my-video').pause();
     this.setState({
-      img: frame.dataUri
+      img: frame.dataUri,
+      croppedImage: null,
+      cropped: false
     })
   }
 
@@ -71,6 +77,8 @@ class SRVideo extends Component {
       img: null,
       cropped: true
     })
+    const img = this.state.croppedImage
+    fs.writeFileSync(path.join(IMGS_FOLDER, 'crop_out.png'), img)
   }
 
   render() {
@@ -101,7 +109,7 @@ class SRVideo extends Component {
 
         {
           this.state.videoPath && (
-            <Container align="center">
+            <Container align="center" style={{marginBottom: '20px'}}>
               <Item xs={12}>
                 <video ref="my-vid" 
                 style={{width: '60%'}} id="my-video" 
@@ -118,7 +126,7 @@ class SRVideo extends Component {
 
         {
           this.state.img && (
-            <Container>
+            <Container className={classes.cropped} align="center">
               <Item sm={12}>
                 <Cropper
                   ref='cropper'
@@ -131,7 +139,7 @@ class SRVideo extends Component {
                   />
               </Item>
               <Item sm={12}>
-                <Button color="default" variant="contained"
+                <Button color="primary" variant="contained"
                   onClick={this.handleCrop}>
                   Crop Image
                 </Button>
@@ -142,11 +150,9 @@ class SRVideo extends Component {
 
         {
           this.state.cropped && (
-            <Container>
-              <Item sm={12}>
-                <img src={this.state.croppedImage} alt="Cropped" />
-              </Item>
-            </Container>
+            <VideoCard
+              file={this.state.croppedImage}
+              />
           )
         }
 

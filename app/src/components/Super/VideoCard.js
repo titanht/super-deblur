@@ -25,9 +25,9 @@ const styles = theme => ({
     flexGrow: 1
   },
   paper: {
-    padding: theme.spacing(1),
+    // padding: theme.spacing(1),
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    // color: theme.palette.text.secondary,
   },
 });
 
@@ -43,23 +43,25 @@ class ImageCard extends Component {
   }
 
   uploadHandler = () => {
-    const formData = new FormData()
-    formData.append(
-      'image',
-      this.state.file,
-      this.state.file.name
-    )
+    let imgString = this.state.file;
+    imgString = imgString.replace('data:image/png;base64,', '')
+
     this.setState({
       converting: true
     });
 
-    axios.post('http://localhost:9000/super', formData)
+    axios.post('http://localhost:9000/super-64', {
+      'image': imgString
+    })
     .then(res => {
       console.log('Res', res)
       this.setState({
         convertedImage: res.data,
+        converting: this.state.compareResize
       })
-      axios.post('http://localhost:9000/super-resize', formData)
+      axios.post('http://localhost:9000/super-resize-64', {
+        'image': imgString
+      })
       .then(res => {
         this.setState({
           resizedImage: res.data,
@@ -78,7 +80,7 @@ class ImageCard extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.fileName !== prevState.fileName) {
+    if (nextProps.file !== prevState.file) {
       return {
         fileName: nextProps.fileName,
         file: nextProps.file,
@@ -94,18 +96,18 @@ class ImageCard extends Component {
   }
   
   render() {
-    const { compareResize, fileName,
+    const { compareResize, file,
       convertedImage, resizedImage, converting } = this.state;
     const { classes } = this.props;
 
     return (
       <React.Fragment>
       {
-        fileName && (
+        file && (
           <React.Fragment>
             <Container spacing={1} align='center'>
               <Item xs={12}>
-                <img style={imgStyle} src={`/imgs/${fileName}`} alt="Converted"/>
+                <img style={imgStyle} src={file} alt="Converted"/>
               </Item>
 
               <Item xs={12}>
@@ -118,7 +120,7 @@ class ImageCard extends Component {
                   </Item>
                   <Item xs={12}>
                     <Button
-                      disabled={this.state.fileName == null}
+                      disabled={file == null}
                       onClick={this.uploadHandler}
                       variant="outlined" 
                       size="medium" 
