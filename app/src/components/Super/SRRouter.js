@@ -6,11 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import { VideoCall, Image } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core';
 
-import SRImage from './SRImage';
 import { Link } from 'react-router-dom';
 import Container from '../shared/Container';
 import Item from '../shared/Item';
 import SRVideo from './SRVideo';
+import ImageContainer from './ImageContainer';
 
 const styles = theme => ({
   root: {
@@ -30,7 +30,7 @@ const SRRouter = withStyles(styles)(({classes}) => {
     {
       active: true,
       label: 'Image',
-      content: <SRImage />,
+      content: <ImageContainer />,
       icon: <Image />
     },
     {

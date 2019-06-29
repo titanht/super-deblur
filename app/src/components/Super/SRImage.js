@@ -61,6 +61,7 @@ class SRImage extends Component {
 
   uploadHandler = () => {
     const formData = new FormData()
+    console.log(this.state.file)
     formData.append(
       'image',
       this.state.file,
