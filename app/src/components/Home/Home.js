@@ -4,10 +4,6 @@ import {withStyles} from '@material-ui/core';
 import Item from '../shared/Item';
 import Container from '../shared/Container';
 import ImageCard from '../shared/ImageCard';
-import captureVideoFrame from 'capture-video-frame';
-import Cropper from 'react-cropper';
-
-import 'cropperjs/dist/cropper.css';
 
 const styles = theme => ({
   root: {
@@ -29,22 +25,8 @@ class Home extends Component {
     img: null
   }
 
-  _crop(){
-    // image in dataUrl
-    console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
-  }
-
-  handleCapture = () => {
-    console.log("Capture")
-    var frame = captureVideoFrame('my-video', 'png')
-    document.getElementById('my-video').pause();
-    this.setState({
-      img: frame.dataUri
-    },() => console.log(this.state.img))
-    console.log(frame)
-  }
-
   componentDidMount() {
+    this.props.history.push('/super')
   }
   
 
@@ -64,32 +46,6 @@ class Home extends Component {
               <ImageCard image="/imgs/2.png" title="Super Resolution" />
             </Link>
           </Item>
-        </Container>
-        <Container>
-          {/* <video ref="my-vid" id="my-video" src="/videos/v.mp4" controls>
-
-          </video>
-          <Item>
-            <Button onClick={this.handleCapture}>Capture Frame</Button>
-          </Item>
-
-          <Item sm={12}>
-            {
-              this.state.img && (
-                <img  src={this.state.img}  alt="Converted"/>
-              )
-            }
-          </Item> */}
-
-          {/* <img id='image' style={{maxWidth: '100%'}} alt="max" src="/imgs/1.png" /> */}
-          <Cropper
-            ref='cropper'
-            src='/imgs/1.png'
-            style={{height: 400, width: '100%'}}
-            // Cropper.js options
-            aspectRatio={1/1}
-            guides={false}
-            crop={this._crop.bind(this)} />
         </Container>
       </div>
     );

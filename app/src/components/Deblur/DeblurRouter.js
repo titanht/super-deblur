@@ -14,6 +14,9 @@ const styles = theme => ({
   },
   tabContent: {
     padding: theme.spacing(2)
+  },
+  tab: {
+    padding: theme.spacing(4)
   }
 });
 
@@ -49,11 +52,17 @@ const RenderingTabsBasedOnState = withStyles(styles)(({classes}) => {
 
   return (
     <div className={classes.root}>
-      <Tabs value={active} onChange={onChange} centered>
+      <Tabs 
+        value={active}
+        onChange={onChange} 
+        indicatorColor="secondary"
+        textColor="secondary"
+        centered>
         {tabs
           .filter(tab => !tab.hidden)
           .map(tab => (
             <Tab
+              className={classes.tab}
               key={tab.label}
               disabled={tab.disabled}
               icon={tab.icon}
